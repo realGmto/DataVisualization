@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Vizualizacija podataka</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <script>
+            d3.select("body")
+                .append("h1")
+                .html("Vizualizacija podataka LV1");
+
+            
+            var divs = d3.select("body")
+                        .data(d3.range(11))
+                        .enter()
+                        .append("div");
+
+            divs.append("h2");
+            divs.append("p");
+
+            d3.selectAll("h2").html(function(d,i) {return "Podnaslov "+(i+1);})
+            d3.selectAll("p").html(function(d,i) {return "Tekst " + (i+1) + ".";});
+            d3.selectAll("div").attr("id",function(d,i) {return "ID"+(i+1);});
+
+        </script>
+    </body>
+</html>

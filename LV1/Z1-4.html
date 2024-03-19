@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Vizualizacija podataka</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <script>
+            var svg = d3.select("body").append("svg").attr("width","100%").attr("height","200")
+
+            svg.append("rect")
+                .attr("x","0")
+                .attr("y","0")
+                .attr("height","100")
+                .attr("width","600")
+                .attr("style","fill:yellow; stroke:black; stroke-fill:5px; fill-opacity:0.5;")
+        </script>
+    </body>
+</html>
