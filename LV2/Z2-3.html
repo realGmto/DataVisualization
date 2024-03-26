@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>FORMATIRANJE PODATAKA, JSON, JEDNOSTAVNE VIZUALIZACIJE</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <script>
+            var data = `[{"Godina":2001,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"5.121.671,91","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"0","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"0","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"526.728,52","Planirana sredstva za ostale namjene (EUR)":"0","Ukupna sredstva (EUR)":"5.648.400,42"},
+{"Godina":2002,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"6.080.323,84","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"0","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"0","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"526.617,56","Planirana sredstva za ostale namjene (EUR)":"0","Ukupna sredstva (EUR)":"6.606.941,40"},
+{"Godina":2003,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"9.449.453,31","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"0","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"0","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"1.127.758,18","Planirana sredstva za ostale namjene (EUR)":"0","Ukupna sredstva (EUR)":"10.577.211,49"},
+{"Godina":2004,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"13.658.042,60","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"0","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"0","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"1.041.008,43","Planirana sredstva za ostale namjene (EUR)":"0","Ukupna sredstva (EUR)":"14.699.051,03"},
+{"Godina":2005,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"17.254.752,80","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"0","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"0","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"1.202.866,81","Planirana sredstva za ostale namjene (EUR)":"0","Ukupna sredstva (EUR)":"18.457.619,62"},
+{"Godina":2006,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"20.153.682,53","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"0","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"0","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"1.566.716,17","Planirana sredstva za ostale namjene (EUR)":"191.120,84","Ukupna sredstva (EUR)":"21.911.519,54"},
+{"Godina":2007,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"20.965.668,59","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"0","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"0","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"1.698.055,61","Planirana sredstva za ostale namjene (EUR)":"1.268.852,61","Ukupna sredstva (EUR)":"23.932.576,81"},
+{"Godina":2008,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"22.054.018,18","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"0","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"0","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"1.698.055,61","Planirana sredstva za ostale namjene (EUR)":"180.503,02","Ukupna sredstva (EUR)":"23.932.576,81"},
+{"Godina":2009,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"28.836.717,76","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"0","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"0","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"2.574.948,57","Planirana sredstva za ostale namjene (EUR)":"1.194.704,36","Ukupna sredstva (EUR)":"32.606.370,69"},
+{"Godina":2010,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"19.823.866,22","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"0","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"0","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"3.508.222,18","Planirana sredstva za ostale namjene (EUR)":"1.398.898,40","Ukupna sredstva (EUR)":"24.730.986,79"},
+{"Godina":2011,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"19.621.209,10","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"0","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"0","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"3.594.531,82","Planirana sredstva za ostale namjene (EUR)":"674.364,59","Ukupna sredstva (EUR)":"23.890.105,51"},
+{"Godina":2012,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"18.510.783,73","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"0","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"0","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"3.651.204,46","Planirana sredstva za ostale namjene (EUR)":"400.889,24","Ukupna sredstva (EUR)":"22.562.877,43"},
+{"Godina":2013,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"18.519.145,27","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"0","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"0","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"3.651.204,46","Planirana sredstva za ostale namjene (EUR)":"392.527,71","Ukupna sredstva (EUR)":"22.562.877,43"},
+{"Godina":2014,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"23.180.635,74","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"0","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"0","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"3.502.289,47","Planirana sredstva za ostale namjene (EUR)":"392.527,71","Ukupna sredstva (EUR)":"27.075.452,92"},
+{"Godina":2015,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"19.928.329,68","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"0","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"0","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"3.502.289,47","Planirana sredstva za ostale namjene (EUR)":"459.486,36","Ukupna sredstva (EUR)":"23.890.105,51"},
+{"Godina":2016,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"33.032.185,28","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"0","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"0","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"3.523.923,29","Planirana sredstva za ostale namjene (EUR)":"615.568,39","Ukupna sredstva (EUR)":"37.171.676,95"},
+{"Godina":2017,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"35.672.302,08","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"24.821.819,63","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"27.804.764,75","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"7.073.594,80","Planirana sredstva za ostale namjene (EUR)":"1.700.980,82","Ukupna sredstva (EUR)":"97.073.462,07"},
+{"Godina":2018,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"32.510.896,54","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"27.374.596,85","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"27.804.764,75","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"6.982.460,68","Planirana sredstva za ostale namjene (EUR)":"1.563.793,22","Ukupna sredstva (EUR)":"96.236.512,04"},
+{"Godina":2019,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"27.581.856,79","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"35.345.231,93","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"26.508.660,16","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"5.798.705,95","Planirana sredstva za ostale namjene (EUR)":"1.002.057,20","Ukupna sredstva (EUR)":"96.236.512,04"},
+{"Godina":2020,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"27.269.208,31","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"36.274.291,59","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"25.579.600,50","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"5.581.790,43","Planirana sredstva za ostale namjene (EUR)":"1.264.981,09","Ukupna sredstva (EUR)":"95.969.871,92"},
+{"Godina":2021,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"27.143.519,81","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"36.274.291,59","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"25.579.600,50","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"5.581.790,43","Planirana sredstva za ostale namjene (EUR)":"1.390.669,59","Ukupna sredstva (EUR)":"95.969.871,92"},
+{"Godina":2022,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"21.509.323,78","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"31.853.474,02","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"22.215.568,39","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"3.349.074,26","Planirana sredstva za ostale namjene (EUR)":"706.244,61","Ukupna sredstva (EUR)":"79.633.685,05"},
+{"Godina":2023,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"31.853.400,00","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"21.517.800,00","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"22.215.500,00","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"3.278.900,00","Planirana sredstva za ostale namjene (EUR)":"834.400,00","Ukupna sredstva (EUR)":"79.700.000,00"},
+{"Godina":2024,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"26.456.300,00","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"73.194.000,00","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"8.063.000,00","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"3.280.000,00","Planirana sredstva za ostale namjene (EUR)":"2.006.700,00","Ukupna sredstva (EUR)":"113.000.000,00"}]`;
+
+            var obj = JSON.parse(data);
+            total = obj.map(a => parseFloat(a["Ukupna sredstva (EUR)"].replace(/\./g, '').replace(',', '.')))
+            year = obj.map(a => a.Godina);
+
+            var margin = {top: 20, bottom: 70, left:120, right: 20};
+            var width = 1300 - margin.left - margin.right;
+            var height = 800 - margin.top - margin.bottom;
+            var barPadding = 5;
+            var barWidth = width / total.length - barPadding;
+
+            var xScale =d3.scale.ordinal()
+                            .domain(year)
+                            .rangeRoundBands([0,width]);
+
+            var yScale = d3.scale.linear()
+                            .domain([0,d3.max(total)])
+                            .range([height,0]);
+
+
+            var svg = d3.select("body")
+                        .append("svg")
+                         .attr("height",height + margin.bottom + margin.top)
+                         .attr("width",width + margin.left + margin.right +barWidth)
+                        .append("g")
+                         .attr("transform", "translate(" + margin.left + "," + margin.top +")");
+            
+            var xAxis = d3.svg.axis()
+                        .scale(xScale)
+                        .orient("bottom")
+                        .tickFormat(function(d, i) { return i + 2001; });
+
+            var yAxis = d3.svg.axis()
+                        .scale(yScale)
+                        .orient("left")
+                        .ticks(10);
+
+                svg.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(xAxis)
+                    .selectAll("text")
+                    .style("text-anchor", "middle");
+
+                svg.append("text")
+                    .attr("x", (width / 2))
+                    .attr("y", (height + (margin.bottom / 2)))
+                    .attr("dy", "1em")
+                    .style("text-anchor", "middle")
+                    .text("Godina");
+
+
+                svg.append("g")
+                    .attr("class", "y axis")
+                    .call(yAxis)
+
+                svg.append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("x",0 - (height / 2))
+                    .attr("y", 0 - margin.left)
+                    .attr("dy", "1em")
+                    .style("text-anchor", "middle")
+                    .text("Ukupna sredstva (EUR)");
+
+
+            var barchart = svg.selectAll("rect")
+                                .data(total)
+                                .enter()
+                            .append("rect")
+                                .attr("x", function(d, i) { return xScale(year[i]); })
+                                .attr("y", function(d) { return yScale(d); })
+                                .attr("width", barWidth)
+                                .attr("height", function(d) { return height - yScale(d); })
+                                .attr("fill", "blue");
+        </script>
+    </body>
+</html>

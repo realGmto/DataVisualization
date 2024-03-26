@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>FORMATIRANJE PODATAKA, JSON, JEDNOSTAVNE VIZUALIZACIJE</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <script src="http://d3js.org/d3.v7.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <script>
+
+            var startDate = new Date(2024, 3, 15);
+            var endDate = new Date(2024, 3, 26);
+
+            var dataset = d3.timeDays(startDate, d3.timeDay.offset(endDate, 1)).map(function(date) {
+    return {
+        date: date,
+        value: Math.random() * 100
+    };
+});
+            console.log(dataset);
+
+            var margin = {top: 20, bottom: 70, left:120, right: 20};
+            var width = 1300 - margin.left - margin.right;
+            var height = 800 - margin.top - margin.bottom;
+
+
+            var xScale =d3.scaleTime()
+                            .domain([startDate, endDate])
+                            .range([0,width]);
+
+            var yScale = d3.scaleLinear()
+                            .domain([0,d3.max(dataset,function(d) {return d.value})])
+                            .range([height,0]);
+
+
+            var svg = d3.select("body")
+                        .append("svg")
+                         .attr("height",height + margin.bottom + margin.top)
+                         .attr("width",width + margin.left + margin.right)
+                        .append("g")
+                         .attr("transform", "translate(" + margin.left + "," + margin.top +")");
+            
+                svg.append("g")
+                    .attr("class", "x-axis")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(d3.axisBottom(xScale));
+
+                svg.append("g")
+                    .attr("class", "y-axis")
+                    .call(d3.axisLeft(yScale));
+
+                svg.append("text")
+                    .attr("x", (width / 2))
+                    .attr("y", (height + (margin.bottom / 2)))
+                    .attr("dy", "1em")
+                    .style("text-anchor", "middle")
+                    .text("Vrijeme");
+
+                svg.append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("x",0 - (height / 2))
+                    .attr("y", 0 - margin.left)
+                    .attr("dy", "1em")
+                    .style("text-anchor", "middle")
+                    .text("Vrijednost");
+                
+                var line = d3.line()
+                    .x(function(d) { return xScale(d.date); })
+                    .y(function(d) { return yScale(d.value); });
+                
+                svg.append("path")
+                    .datum(dataset)
+                    .attr("class", "line")
+                    .attr("d", line)
+                    .style("stroke","blue")
+                    .style("fill", "none");
+        </script>
+    </body>
+</html>
