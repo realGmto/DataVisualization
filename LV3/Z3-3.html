@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Vizualizacija podataka</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://d3js.org/d3.v7.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <script>
+            var width_SVG = 1000;
+            var height_SVG = 800;
+            var width_Rect = 100;
+            var height_Rect = 200;
+
+            var svg = d3.select("body")
+                        .append("svg")
+                        .attr("height",height_SVG)
+                        .attr("width",width_SVG);
+            
+            var rect = svg.append("rect")
+                        .attr("x",0)
+                        .attr("y",0)
+                        .attr("height",height_Rect)
+                        .attr("width",width_Rect)
+                        .style("fill","blue")
+                        .style("stroke","blue")
+                        .attr("transform", `translate(${width_SVG-width_Rect},${height_SVG-height_Rect})`);
+
+                    rect.transition()
+                            .delay(1000)
+                            .duration(1000)
+                            .ease(d3.easeLinear)
+                            .attr("transform", `translate(0,${height_SVG-height_Rect})`)
+                        .transition()
+                            .delay(1000)
+                            .duration(1000)
+                            .attr("transform", "translate(0, 0)");
+        </script>
+    </body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Vizualizacija podataka</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://d3js.org/d3.v7.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <script>            
+            function PerformTask(){
+                var data = d3.range(10).map(function() {
+                    return {
+                    x: Math.random()*500,
+                    y: Math.random()*500,
+                    transition1: Math.random()*5000,
+                    transition2: Math.random()*5000
+                    };
+                });
+
+                colors = d3.scaleSequential(d3.interpolateRainbow).domain([0,10]);
+
+                var svg = d3.select("body")
+                        .append("svg")
+                        .attr("height",1000)
+                        .attr("width",1000);
+            
+                var rects = svg.selectAll("rect")
+                                .data(data)
+                                .enter()
+                            .append("rect")
+                                .attr("x",function(d) {return d.x})
+                                .attr("y",function(d,i) {return d.y})
+                                .attr("height",75)
+                                .attr("width",75)
+                                .attr("style","margin-bottom: 10px")
+                                .style("fill","white")
+                                .style("stroke",function(d,i) {return colors(i);})
+                            .transition()
+                                .delay(2000)
+                                .duration(function(d) {return d.transition1})
+                                .ease(d3.easeLinear)
+                                .style("fill",function(d,i) {return colors(i);})
+                            .transition()
+                                .duration(function(d) {return d.transition2})
+                                .attr("width",1000/2)
+                                .style("opacity",0)
+                            .end()
+                            .then(() => {
+                                svg.remove()
+                                PerformTask()});
+            }
+            PerformTask();
+        </script>
+    </body>
+</html>

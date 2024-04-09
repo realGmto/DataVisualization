@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Vizualizacija podataka</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://d3js.org/d3.v7.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <script>
+            var width_SVG = 1200;
+            var height_SVG = 900;
+            var radius_Circle = 50;
+
+            colors = d3.scaleSequential(d3.interpolateRainbow).domain([0,3]);
+
+            var svg = d3.select("body")
+                        .append("svg")
+                        .attr("height",height_SVG)
+                        .attr("width",width_SVG);
+
+            var rects = svg.selectAll("rect")
+                                .data(d3.range(3))
+                                .enter()
+                            .append("rect")
+                                .attr("x",function(d) {return d*300+25})
+                                .attr("y",800)
+                                .attr("height",100)
+                                .attr("width",200)
+                                .style("fill",function(d) {return colors(d)})
+                                .style("stroke",function(d) {return colors(d)});
+
+
+
+            var circle1 = svg.append("circle")
+                                .attr("cx",100)
+                                .attr("cy",100)
+                                .attr("r",radius_Circle)
+                                .style("fill","red")
+                                .style("stroke","red")
+                            .transition()
+                                .duration(2000)
+                                .ease(d3.easeCubicIn)
+                                .attr("transform",`translate(0,650)`);
+
+            var circle2 = svg.append("circle")
+                                .attr("cx",400)
+                                .attr("cy",100)
+                                .attr("r",radius_Circle)
+                                .style("fill","green")
+                                .style("stroke","green")
+                            .transition()
+                                .duration(2000)
+                                .ease(d3.easeCubicIn)
+                                .attr("transform",`translate(0,650)`)
+                            .transition()
+                                .duration(2000)
+                                .ease(d3.easeCubicOut)
+                                .attr("transform",`translate(0,0)`);
+
+            var circle3 =svg.append("circle")
+                                .attr("cx",700)
+                                .attr("cy",100)
+                                .attr("r",radius_Circle)
+                                .style("fill","blue")
+                                .style("stroke","blue")
+                            .transition()
+                                .duration(2000)
+                                .ease(d3.easeCubicIn)
+                                .attr("transform",`translate(0,750)`)
+                            .transition()
+                                .duration(2000)
+                                .ease(d3.easeElastic)
+                                .attr("transform",`translate(0,700)`)
+        </script>
+    </body>
+</html>

@@ -37,6 +37,7 @@
 {"Godina":2024,"Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)":"26.456.300,00","Planirana sredstva za održavanje komunalne infrastrukture  u gradskim četvrtima (EUR)":"73.194.000,00","Planirana sredstva za održavanje komunalne infrastrukture u mjesnim odborima (EUR)":"8.063.000,00","Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)":"3.280.000,00","Planirana sredstva za ostale namjene (EUR)":"2.006.700,00","Ukupna sredstva (EUR)":"113.000.000,00"}]`;
 
             var obj = JSON.parse(data);
+            console.log(obj);
             total = obj.map(a => parseFloat(a["Ukupna sredstva (EUR)"].replace(/\./g, '').replace(',', '.')))
             clanTrosak = obj.map(a => parseFloat(a["Planirana sredstva za naknade članovima vijeća gradskih četvrti i vijeća mjesnih odbora (EUR)"].replace(/\./g, '').replace(',', '.')))
             komunalniTrosak = obj.map(a => parseFloat(a["Planirana sredstva za unapređivanje komunalnog standarda u gradskim četvrtima (EUR)"].replace(/\./g, '').replace(',', '.')))

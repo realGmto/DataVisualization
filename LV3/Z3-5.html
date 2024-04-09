@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Vizualizacija podataka</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://d3js.org/d3.v7.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <script>
+            var width_SVG = 1800;
+            var height_SVG = 900;
+            var earthRadius = 10;
+            var earthDistance= 100;
+            var earthTime = 2000;
+            var counter = 0;
+
+            colors = d3.scaleSequential(d3.interpolateRainbow).domain([0,8]);
+
+            var svg = d3.select("body")
+                        .append("svg")
+                        .attr("height",height_SVG)
+                        .attr("width",width_SVG)
+                        .style("background","black");
+
+            
+            distanceRatio= [0.387,0.723,1,1.52,2.98,4.63,5.89,7.11];
+            radiusRatio = [0.383, 0.949, 1, 0.532, 4.605, 3.725, 2, 1.94];
+            timeRatio = [843,1145,2000,1942,4831,4505,2786,2981];
+
+            const combinedData = d3.zip(distanceRatio, radiusRatio, timeRatio);
+
+            const planets = combinedData.map(([distance, radius, time]) => ({
+            distanceRatio: distance,
+            radiusRatio: radius,
+            timeRatio: time
+            }));
+
+            var sun = svg.append("circle")
+                            .attr("cx",900)
+                            .attr("cy",450)
+                            .attr("r",75)
+                            .style("fill","yellow")
+                            .style("stroke","yellow");
+
+            var circles =   svg.selectAll("circle")
+                                .data(planets)
+                                .enter()
+                            .append("circle")
+                                .attr("cx",function(d) {return 975+earthDistance*d.distanceRatio})
+                                .attr("cy",450)
+                                .attr("r",function(d) {return earthRadius*d.radiusRatio})
+                                .style("fill",function(d,i) {return colors(i)})
+                                .style("stroke",function(d,i) {return colors(i)})
+                            .each(function(d,i) {
+                                d3.select(this)
+                                .transition()
+                                    .duration(function(d) {return d.timeRatio})
+                                    .ease(d3.easeLinear)
+                                    .attrTween("transform",() => d3.interpolateString("rotate(0, 900, 450)", "rotate(360, 900, 450)"))
+                                    .end()
+                                    .then(() => {Repeat(this)});
+                            });
+
+                function Repeat(circle){
+                    d3.select(circle)
+                    .transition()
+                        .duration(function(d) {return d.timeRatio})
+                        .ease(d3.easeLinear)
+                        .attrTween("transform",() => d3.interpolateString("rotate(0, 900, 450)", "rotate(360, 900, 450)"))
+                        .end()
+                        .then(() => {Repeat(circle)});
+            }
+
+        </script>
+    </body>
+</html>
