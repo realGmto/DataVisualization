@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Vizualizacija podataka</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://d3js.org/d3.v7.min.js" charset="utf-8"></script>
+        <style>
+            .node circle {
+                fill: #fff;
+                stroke: steelblue;
+                stroke-width: 1.5px;
+            }
+            
+            .node {
+                font: 10px sans-serif;
+            }
+
+            .link {
+                fill: none;
+                stroke: #ccc;
+                stroke-width: 1.5px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <script>
+            var height = 500;
+            var width = 500;
+            var node_size = 20;
+
+            var data = {
+                "name": "flare",
+                    "children": [
+                    {
+                        "name": "analytics",
+                        "children": [
+                            {
+                                "name": "cluster",
+                                "children": [
+                                    {"name": "AgglomerativeCluster", "size": 3938},
+                                    {"name": "CommunityStructure", "size": 3812},
+                                    {"name": "MergeEdge", "size": 743}
+                                ]
+                            },
+                            {
+                                "name": "graph",
+                                "children": [
+                                    {"name": "BetweennessCentrality", "size": 3534},
+                                    {"name": "LinkDistance", "size": 5731}
+                                ]
+                            }
+                        ]
+                    }
+                    ]
+                };
+
+            // Kreiranje SVG-a te njegova priprema
+            var svg = d3.select("body").append("svg")
+                            .attr("height",height)
+                            .attr("width",width)
+                        .append("g")
+                            .attr("transform", "translate(40,0)");
+
+           var root_node = d3.hierarchy(data);
+
+            // Definiranje layouta
+            var cluster = d3.cluster()
+                            .size([height, width - 160]);
+
+            // Generator krivulja
+            var diagonal = d3.linkHorizontal()
+                            .x(function(d) { return d.y; })
+                            .y(function(d) { return d.x; });
+
+            // Računanje položaja čvorova i veza
+            var nodes = cluster(root_node),
+            links = nodes.links();
+
+            // Kreiranje veza 
+            var link = svg.selectAll(".link")
+                            .data(links)
+                        .enter().append("path")
+                            .attr("class", "link")
+                            .attr("d", diagonal);
+            // Kreiranje čvorova
+            var node = svg.selectAll(".node")
+                            .data(nodes)
+                        .enter().append("g")
+                            .attr("class", "node")
+                            .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+            // Kreiranje kružnice oko čvora da izgleda kao čvor
+            node.append("circle") .attr("r", 4.5);
+
+            svg.selectAll("text")
+                    .data(nodes.descendants())
+                    .enter()
+                .append("text")
+                    .attr("dy",node_size * 1.1)
+                    .attr("text-anchor","middle")
+                    .attr("x",function(d) { return d.y; })          // Vrijednosti su obrnute jer su tako nodes translatirani (Pogledaj red 94.)
+                    .attr("y",function(d) { return d.x; })
+                    .text(function(d) { return d.data.name; } );
+
+
+            node.append("text")
+                    .attr("dx", function(d) { return d.children ? -8 : 8; })
+                    .attr("dy", 3)
+                    .style("text-anchor", function(d) { return d.children ? "end" : "start"; })
+                    .text(function(d) { return d.name; });
+
+
+        </script>
+    </body>
+</html>

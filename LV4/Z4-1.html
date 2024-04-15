@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Vizualizacija podataka</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://d3js.org/d3.v7.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <script>
+            var height = 500;
+            var width = 500;
+            var outerRadius = 200;
+            var innerRadius = 0;
+
+            var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+            var data = [
+                {name: 'jabuka', value: 17},
+                {name: 'kruska', value: 4},
+                {name: 'banana', value: 83},
+                {name: 'jagoda', value: 47},
+                {name: 'ribizla', value: 1}
+            ];
+
+            var arc = d3.arc()
+                        .innerRadius(innerRadius)
+                        .outerRadius(outerRadius);
+
+            var pie = d3.pie()
+            .value(function(d) { return d.value; });
+
+            var svg = d3.select("body").append("svg")
+                        .attr("width", width)
+                        .attr("height", height);
+            
+            var pieArcs = svg.selectAll("g.pie")
+                                .data(pie(data))
+                                .enter()
+                            .append("g")
+                                .attr("class", "pie")
+                                .attr("transform", "translate(" + (width / 2) + ", " + (height / 2) + ")");
+
+            pieArcs.append("path")
+                    .attr("fill", function(d, i) { return color(i); })
+                    .attr("id", function(d,i) { return "Arc_"+i; })
+                    .attr("d", arc);
+            
+
+            pieArcs.append("text")
+                .attr("x", "50%")
+            .append("textPath")
+                .attr("xlink:href",function(d,i){return "#Arc_"+i;})
+                .text(function(d){return d.data.name;});
+
+            
+
+
+        </script>
+    </body>
+</html>
