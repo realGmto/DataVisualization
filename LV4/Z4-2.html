@@ -19,10 +19,10 @@
 
             var data = [
                 {name: 'jabuka', value: 17},
-                {name: 'kruska', value: 4},
+                {name: 'kruska', value: 23},
                 {name: 'banana', value: 83},
                 {name: 'jagoda', value: 47},
-                {name: 'ribizla', value: 1}
+                {name: 'ribizla', value: 15}
             ];
 
             var arc = d3.arc()
@@ -43,26 +43,28 @@
                                 .attr("class", "pie")
                                 .attr("transform", "translate(" + (width / 2) + ", " + (height / 2) + ")");
 
-            pieArcs.append("path")
+            /*pieArcs.append("path")
                     .attr("fill", function(d, i) { return color(i); })
                     .attr("d", arc);
             
             pieArcs.append("text")
-                    .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; }) .attr("text-anchor", "middle")
-                    .text(function(d) { return d.value + " - " + d.data.name; });
+                    .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; }) 
+                    .attr("text-anchor", "middle")
+                    .text(function(d) { return d.value + " - " + d.data.name; });*/
 
 
-           /* pieArcs.append("path")
+            pieArcs.append("path")
                     .attr("fill", function(d, i) { return color(i); })
                     .attr("id", function(d,i) { return "Arc_"+i; })
                     .attr("d", arc);
             
 
             pieArcs.append("text")
-                .attr("x", "50%")
+            .attr("dy",-30)
+            .attr("x",function(d){return d.value*2.5;})
             .append("textPath")
                 .attr("xlink:href",function(d,i){return "#Arc_"+i;})
-                .text(function(d){return d.data.name;});*/
+                .text(function(d){return d.data.name;});
 
             
 

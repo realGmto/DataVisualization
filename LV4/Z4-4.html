@@ -91,7 +91,27 @@
                             .data(nodes)
                         .enter().append("g")
                             .attr("class", "node")
-                            .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+                            .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+                            .on("click",function(i,d) {
+                                console.log(d3.selectAll(".node").exit())
+                                d3.selectAll(".node").exit().remove()
+
+                                /*d.children.forEach(function(child) {
+                                        child.hidden = true; // Toggle visibility
+                                        console.log(child);
+                                        d3.select(child).remove()
+                                    });
+                                console.log(d.children);*/
+
+                                //console.log(d3.select(".node"))
+                                d3.select(this.__data__.children).remove()
+
+                                if (this.__data__.children) {
+                                    this.__data__.children.forEach(function(child) {
+                                        child.hidden = !child.hidden; // Toggle visibility
+                                    });
+                                }
+                            });
 
             // Kreiranje kružnice oko čvora da izgleda kao čvor
             node.append("circle") .attr("r", 4.5);
