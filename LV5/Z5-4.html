@@ -6,7 +6,7 @@
         <title>Vizualizacija podataka</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="http://d3js.org/d3.v4.min.js"></script>
         <script src="http://d3js.org/topojson.v1.min.js"></script>
     </head>
     <body>
@@ -14,21 +14,39 @@
             var width = 960;
             var height = 700;
 
-            var projection = d3.geo.mercator()
+            function zoomed() {
+                svg.selectAll("path")
+                    .attr("transform", d3.event.transform);
+            }
+
+            function resetZoom() {
+                svg.transition()
+                    .duration(750)
+                    .call(zoom.transform, d3.zoomIdentity);
+
+                tooltip.style("visibility","hidden");
+            }
+
+            var zoom = d3.zoom()
+                .scaleExtent([1, 8])
+                .on("zoom", zoomed);
+
+            var projection = d3.geoMercator()
                 .center([0, 10])
                 .scale(6000)
                 .translate([17600, 4500])
                 .rotate([-180, 0]);
             
-            var path = d3.geo.path()
+            var path = d3.geoPath()
                 .projection(projection);
             
             var svg = d3.select("body").append("svg")
                 .attr("width", width)
                 .attr("height", height)
-                .style("background", "white");
+                .style("background", "white")
+                .call(zoom);
 
-            var color = d3.scale.linear()
+            var color = d3.scaleLinear()
                 .range(["#c0fabe", "#034001"])
 
             var tooltip = d3.select("body")
@@ -40,7 +58,7 @@
                 .style("background", "#dfdfdf")
                 .style("border-radius","5px")
                 .style("top","100px")
-                .style("left","920px")
+                .style("left","980px")
 
             tooltip.append("p")
                 .attr("id","name");
@@ -69,6 +87,20 @@
                 .style("stroke-width", 1)
                 .style("stroke-opacity", 1)
                 .on("click", function(d){
+                    var bounds = path.bounds(d),
+                        dx = bounds[1][0] - bounds[0][0],
+                        dy = bounds[1][1] - bounds[0][1],
+                        x = (bounds[0][0] + bounds[1][0]) / 2,
+                        y = (bounds[0][1] + bounds[1][1]) / 2,
+                        scale = Math.max(1, Math.min(8, 0.9 / Math.max(dx / width, dy / height))),
+                        translate = [width / 2 - scale * x, height / 2 - scale * y];
+
+                    svg.transition()
+                            .duration(750)
+                            .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale))
+                    
+                    setTimeout(resetZoom, 10000);
+                    
                     tooltip.select("#name")
                     .text("Naziv županije: "+d.properties.name);
 
