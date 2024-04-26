@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Vizualizacija podataka</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="http://d3js.org/topojson.v1.min.js"></script>
+    </head>
+    <body>
+        <div>
+            <h3 id="name"></h3>
+            <h3 id="population"></h3>
+            <h3></h3>
+        </div>
+        <script>
+            var width = 960;
+            var height = 700;
+
+            var projection = d3.geo.mercator()
+                .center([0, 10])
+                .scale(6000)
+                .translate([17600, 4500])
+                .rotate([-180, 0]);
+            
+            var path = d3.geo.path()
+                .projection(projection);
+            
+            var svg = d3.select("body").append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .style("background", "white");
+
+            var color = d3.scale.linear()
+                .range(["#c0fabe", "#034001"])
+
+            var tooltip = d3.select("div")
+                .style("max-width","240px")
+                .style("padding", "5px")
+                .style("position", "absolute")
+                .style("visibility", "hidden")
+                .style("background", "#dfdfdf")
+                .style("border-radius","5px")
+                .style("top","100px")
+                .style("left","920px")
+
+            d3.json("cro.json", function(error, cro) {
+                var data = topojson.feature(cro, cro.objects.layer1);
+
+                var maxPop = d3.max(data.features, function(d) { return d.properties.population; });
+                color.domain([0, maxPop]);
+
+                var states = svg.selectAll("path.region")
+                .data(data.features)
+                .enter()
+                .append("path")
+                .attr("class", "county")
+                .attr("id", function(d) { return d.id; })
+                .attr("d", path) 
+                .style("fill", function(d) { return color(d.properties.population)})
+                .style("stroke", "gray")
+                .style("stroke-width", 1)
+                .style("stroke-opacity", 1)
+                .on("mousemove", function(d){
+                    return tooltip.style("visibility","visible")
+                    .text("Naziv županije: "+d.properties.name+" Broj Stanovnika: "+d.properties.population);
+                })
+                .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+            });
+        </script>
+    </body>
+</html>
